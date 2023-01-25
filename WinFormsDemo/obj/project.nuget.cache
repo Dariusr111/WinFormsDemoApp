@@ -1,8 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "NPdiLccwQXCzg/qiKMqa7nELp3KwBRqc3nSjx67E9TYJ1u2i1yQViJtBYCN/FEUjsGIt4OKv4hgtPa8X0NsdpA==",
+  "dgSpecHash": "YR6YMA5tTblEU3FDaS1JZQADYFH7p0xMr1U6WkT9yIpSIW4ynNQ3s5WUPxgEv/6iJoetd088jTs5oHGnNYaJtQ==",
   "success": true,
   "projectFilePath": "C:\\cs\\WinFormsDemoApp\\WinFormsDemo\\WinFormsDemo.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\Lenovo\\.nuget\\packages\\csvhelper\\30.0.1\\csvhelper.30.0.1.nupkg.sha512",
+    "C:\\Users\\Lenovo\\.nuget\\packages\\microsoft.data.sqlite.core\\7.0.2\\microsoft.data.sqlite.core.7.0.2.nupkg.sha512",
+    "C:\\Users\\Lenovo\\.nuget\\packages\\sqlitepclraw.core\\2.1.2\\sqlitepclraw.core.2.1.2.nupkg.sha512",
+    "C:\\Users\\Lenovo\\.nuget\\packages\\system.memory\\4.5.3\\system.memory.4.5.3.nupkg.sha512"
+  ],
   "logs": []
 }
