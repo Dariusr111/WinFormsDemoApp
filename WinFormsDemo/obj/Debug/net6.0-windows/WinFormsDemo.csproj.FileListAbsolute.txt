@@ -18,3 +18,4 @@ C:\cs\WinFormsDemoApp\WinFormsDemo\obj\Debug\net6.0-windows\ref\WinFormsDemo.dll
 C:\cs\WinFormsDemoApp\WinFormsDemo\bin\Debug\net6.0-windows\Microsoft.Data.Sqlite.dll
 C:\cs\WinFormsDemoApp\WinFormsDemo\bin\Debug\net6.0-windows\SQLitePCLRaw.core.dll
 C:\cs\WinFormsDemoApp\WinFormsDemo\obj\Debug\net6.0-windows\WinFormsDemo.csproj.CopyComplete
+C:\cs\WinFormsDemoApp\WinFormsDemo\bin\Debug\net6.0-windows\CsvHelper.dll

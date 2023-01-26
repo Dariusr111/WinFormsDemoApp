@@ -2,7 +2,12 @@ using static System.Net.Mime.MediaTypeNames;
 using System.Formats.Asn1;
 using Microsoft.Data.Sqlite;
 using CsvHelper;
+using System;
+using System.Collections;
+using System.Globalization;
 using System.Data.Common;
+
+
 
 namespace WinFormsDemo
 {
@@ -17,28 +22,28 @@ namespace WinFormsDemo
 		{
 		}
 
-		private void button1_Click(object sender, EventArgs e)
+		private void button1_Click(object sender, EventArgs e, string[] args)
 		{
-			string databasePath = "Data Source=C:\\Salda/database/test.db; Version=3; New=False; Compress=True";
-			SqliteConnection connection = new SqliteConnection(databasePath);
-			connection.Open();
-			SqliteCommand command = connection.CreateCommand();
-			command.Transaction = connection.BeginTransaction();
-			command.CommandText = "INSERT INTO [users] VALUES(@C0,@C1,@C2,@C3,@C4,@C5,@C6)";
 
-			using (var fileStream = new FileStream("C:\\Salda/uzduotis/users.csv", FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-			using (StreamReader streamReader = new StreamReader(fileStream))
+			//  SqliteConnection connection = new SqliteConnection("Data Source=C:/test.db;");
+			//	connection.Open();
+			//	SqliteCommand command = connection.CreateCommand();
+			//	command.Transaction = connection.BeginTransaction();
+			//	command.CommandText = "INSERT INTO [users] VALUES(@C0,@C1,@C2,@C3,@C4,@C5,@C6)";
+
+			using (var reader = new StreamReader("c:/users.csv"))
+			using (var csv = new CsvReader(reader, cultureinfo.invariantculture))
 			{
-				using (CsvReader reader = new CsvReader(streamReader))
+				var records = csv.GetRecords<Columns>();
+
+				for (int i = 0; i < records.Count; i++)
 				{
-					reader.ReadHeader();
-					while (reader.ReadHeader != null)
-					{
-						DbDataRecord record = reader.GetRecord;
-					}
+					Console.WriteLine(records[i]);
+					break;
 				}
 
 			}
+
 
 		}
 
@@ -56,6 +61,18 @@ namespace WinFormsDemo
 			{ textBox1.Text = "You didn't select the file!"; }
 
 		}
+			
+	}
+
+public class Columns
+	{
+		public int id { get; set; }
+		public string username { get; set; }
+		public string password { get; set; }
+		public string company { get; set; }
+		public string email { get; set; }
+		public int role { get; set; }
+		public string client_code { get; set; }
 	}
 
 
