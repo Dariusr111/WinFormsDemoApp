@@ -2,11 +2,9 @@ using static System.Net.Mime.MediaTypeNames;
 using System.Formats.Asn1;
 using Microsoft.Data.Sqlite;
 using CsvHelper;
+using CsvHelper.Configuration;
 using System;
-using System.Collections;
 using System.Globalization;
-using System.Data.Common;
-
 
 
 namespace WinFormsDemo
@@ -22,7 +20,7 @@ namespace WinFormsDemo
 		{
 		}
 
-		private void button1_Click(object sender, EventArgs e, string[] args)
+		private void button1_Click(object sender, EventArgs e)
 		{
 
 			//  SqliteConnection connection = new SqliteConnection("Data Source=C:/test.db;");
@@ -31,20 +29,38 @@ namespace WinFormsDemo
 			//	command.Transaction = connection.BeginTransaction();
 			//	command.CommandText = "INSERT INTO [users] VALUES(@C0,@C1,@C2,@C3,@C4,@C5,@C6)";
 
-			using (var reader = new StreamReader("c:/users.csv"))
-			using (var csv = new CsvReader(reader, cultureinfo.invariantculture))
+			var csvConfig = new CsvConfiguration(CultureInfo.CurrentCulture)
 			{
-				var records = csv.GetRecords<Columns>();
+				HasHeaderRecord = false
+			};
 
-				for (int i = 0; i < records.Count; i++)
+
+
+
+			using var streamReader = new StreamReader("C:/usersh.csv");
+			using var csvReader = new CsvReader(streamReader, csvConfig);
+
+			string value;
+
+			while (csvReader.Read())
+			{
+				for (int i = 0; csvReader.TryGetField<string>(i, out value); i++)
 				{
-					Console.WriteLine(records[i]);
-					break;
+					System.Diagnostics.Debug.WriteLine($"{value} ");
 				}
+
+				Console.WriteLine();
 
 			}
 
 
+			//var users = csvReader.GetRecords<User>();
+
+			//foreach (var user in users)
+			//{
+			//	System.Diagnostics.Debug.WriteLine(user);
+			//}
+			
 		}
 
 		private void button2_Click(object sender, EventArgs e)
@@ -64,7 +80,7 @@ namespace WinFormsDemo
 			
 	}
 
-public class Columns
+	public class User
 	{
 		public int id { get; set; }
 		public string username { get; set; }
