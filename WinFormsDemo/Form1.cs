@@ -11,13 +11,39 @@ namespace WinFormsDemo
 {
 	public partial class Form1 : Form
 	{
+
+
 		public Form1()
 		{
 			InitializeComponent();
 		}
 
+
+
 		private void label1_Click(object sender, EventArgs e)
 		{
+		}
+
+
+		
+
+		private string path1;
+		private void button2_Click(object sender, EventArgs e)
+		{
+			OpenFileDialog openFileDialog = new OpenFileDialog();
+			openFileDialog.Title = "Select File";
+			openFileDialog.InitialDirectory = @"C:\";
+			openFileDialog.Filter = "All files (*.*)|*.*|Excel File (*.csv)|*.csv";
+			openFileDialog.FilterIndex = 2;
+			openFileDialog.ShowDialog();
+			if (openFileDialog.FileName != "")
+			{ 
+				textBox1.Text = openFileDialog.FileName;
+				path1 = openFileDialog.FileName;
+			}
+			else
+			{ textBox1.Text = "You didn't select the file!"; }
+
 		}
 
 		private void button1_Click(object sender, EventArgs e)
@@ -29,55 +55,42 @@ namespace WinFormsDemo
 			//	command.Transaction = connection.BeginTransaction();
 			//	command.CommandText = "INSERT INTO [users] VALUES(@C0,@C1,@C2,@C3,@C4,@C5,@C6)";
 
-			var csvConfig = new CsvConfiguration(CultureInfo.CurrentCulture)
+			if (path1 != null)
 			{
-				HasHeaderRecord = false
-			};
-
-
-
-
-			using var streamReader = new StreamReader("C:/usersh.csv");
-			using var csvReader = new CsvReader(streamReader, csvConfig);
-
-			string value;
-
-			while (csvReader.Read())
-			{
-				for (int i = 0; csvReader.TryGetField<string>(i, out value); i++)
+				var csvConfig = new CsvConfiguration(CultureInfo.CurrentCulture)
 				{
-					System.Diagnostics.Debug.WriteLine($"{value} ");
+					HasHeaderRecord = true
+				};
+
+
+				using var streamReader = new StreamReader(path1);
+				using var csvReader = new CsvReader(streamReader, csvConfig);
+
+				string value;
+
+				while (csvReader.Read())
+				{
+					for (int i = 0; csvReader.TryGetField<string>(i, out value); i++)
+					{
+						System.Diagnostics.Debug.WriteLine($"{value} ");
+					}
+
 				}
 
-				Console.WriteLine();
-
+			}
+			else
+			{
+				textBox1.Text = "You didn't select the file!";
 			}
 
 
-			//var users = csvReader.GetRecords<User>();
-
-			//foreach (var user in users)
-			//{
-			//	System.Diagnostics.Debug.WriteLine(user);
-			//}
-			
 		}
 
-		private void button2_Click(object sender, EventArgs e)
-		{
-			OpenFileDialog openFileDialog = new OpenFileDialog();
-			openFileDialog.Title = "Select File";
-			openFileDialog.InitialDirectory = @"C:\";
-			openFileDialog.Filter = "All files (*.*)|*.*|Excel File (*.csv)|*.csv";
-			openFileDialog.FilterIndex = 2;
-			openFileDialog.ShowDialog();
-			if (openFileDialog.FileName != "")
-			{ textBox1.Text = openFileDialog.FileName; }
-			else
-			{ textBox1.Text = "You didn't select the file!"; }
 
-		}
-			
+
+
+
+
 	}
 
 	public class User
