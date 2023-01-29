@@ -5,7 +5,7 @@ using CsvHelper;
 using CsvHelper.Configuration;
 using System;
 using System.Globalization;
-
+using System.Security.Cryptography.X509Certificates;
 
 namespace WinFormsDemo
 {
@@ -28,6 +28,7 @@ namespace WinFormsDemo
 		
 
 		private string path1;
+
 		private void button2_Click(object sender, EventArgs e)
 		{
 			OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -42,25 +43,21 @@ namespace WinFormsDemo
 				path1 = openFileDialog.FileName;
 			}
 			else
-			{ textBox1.Text = "You didn't select the file!"; }
+			{ textBox1.Text = "Jûs nepasirinkote failo!"; }
 
 		}
 
 		private void button1_Click(object sender, EventArgs e)
 		{
 
-			//  SqliteConnection connection = new SqliteConnection("Data Source=C:/test.db;");
-			//	connection.Open();
-			//	SqliteCommand command = connection.CreateCommand();
-			//	command.Transaction = connection.BeginTransaction();
-			//	command.CommandText = "INSERT INTO [users] VALUES(@C0,@C1,@C2,@C3,@C4,@C5,@C6)";
-
 			if (path1 != null)
 			{
 				var csvConfig = new CsvConfiguration(CultureInfo.CurrentCulture)
 				{
 					HasHeaderRecord = true
+					
 				};
+
 
 
 				using var streamReader = new StreamReader(path1);
@@ -72,27 +69,50 @@ namespace WinFormsDemo
 				{
 					for (int i = 0; csvReader.TryGetField<string>(i, out value); i++)
 					{
-						System.Diagnostics.Debug.WriteLine($"{value} ");
+					//	System.Diagnostics.Debug.WriteLine($"{value} ");
+
+
 					}
 
 				}
 
+				
+
 			}
 			else
 			{
-				textBox1.Text = "You didn't select the file!";
+				textBox1.Text = "Jûs nepasirinkote failo!";
 			}
+			
+		}
 
+		public static void AddUserToDatabase(User user)
+		{
+			SqliteConnection con = new SqliteConnection("data source=C:/database/test2.db;");
+			SqliteCommand cmd = new SqliteCommand
+			{
+				Connection = con,
+				CommandText =
+				"INSERT INTO users (id,username,password,company,email,role,client_code)" +
+				"value (@v1,@v2,@v3,v4,@v5,@v6,@v7)"
+			};
+			cmd.Parameters.AddWithValue("@v1", user.id);
+			cmd.Parameters.AddWithValue("@v2", user.username);
+			cmd.Parameters.AddWithValue("@v3", user.password);
+			cmd.Parameters.AddWithValue("@v4", user.company);
+			cmd.Parameters.AddWithValue("@v5", user.email);
+			cmd.Parameters.AddWithValue("@v6", user.role);
+			cmd.Parameters.AddWithValue("@v7", user.client_code);
+
+			con.Open();
+			cmd.ExecuteNonQuery();
+			con.Close();
 
 		}
 
-
-
-
-
-
 	}
 
+	
 	public class User
 	{
 		public int id { get; set; }
