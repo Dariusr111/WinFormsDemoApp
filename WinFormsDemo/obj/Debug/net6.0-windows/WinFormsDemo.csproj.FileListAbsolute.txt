@@ -19,3 +19,13 @@ C:\cs\WinFormsDemoApp\WinFormsDemo\bin\Debug\net6.0-windows\Microsoft.Data.Sqlit
 C:\cs\WinFormsDemoApp\WinFormsDemo\bin\Debug\net6.0-windows\SQLitePCLRaw.core.dll
 C:\cs\WinFormsDemoApp\WinFormsDemo\obj\Debug\net6.0-windows\WinFormsDemo.csproj.CopyComplete
 C:\cs\WinFormsDemoApp\WinFormsDemo\bin\Debug\net6.0-windows\CsvHelper.dll
+C:\cs\WinFormsDemoApp\WinFormsDemo\bin\Debug\net6.0-windows\Microsoft.EntityFrameworkCore.dll
+C:\cs\WinFormsDemoApp\WinFormsDemo\bin\Debug\net6.0-windows\Microsoft.EntityFrameworkCore.Abstractions.dll
+C:\cs\WinFormsDemoApp\WinFormsDemo\bin\Debug\net6.0-windows\Microsoft.Extensions.Caching.Abstractions.dll
+C:\cs\WinFormsDemoApp\WinFormsDemo\bin\Debug\net6.0-windows\Microsoft.Extensions.Caching.Memory.dll
+C:\cs\WinFormsDemoApp\WinFormsDemo\bin\Debug\net6.0-windows\Microsoft.Extensions.DependencyInjection.dll
+C:\cs\WinFormsDemoApp\WinFormsDemo\bin\Debug\net6.0-windows\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\cs\WinFormsDemoApp\WinFormsDemo\bin\Debug\net6.0-windows\Microsoft.Extensions.Logging.dll
+C:\cs\WinFormsDemoApp\WinFormsDemo\bin\Debug\net6.0-windows\Microsoft.Extensions.Logging.Abstractions.dll
+C:\cs\WinFormsDemoApp\WinFormsDemo\bin\Debug\net6.0-windows\Microsoft.Extensions.Options.dll
+C:\cs\WinFormsDemoApp\WinFormsDemo\bin\Debug\net6.0-windows\Microsoft.Extensions.Primitives.dll
