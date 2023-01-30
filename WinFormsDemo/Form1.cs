@@ -43,11 +43,7 @@ namespace WinFormsDemo
 			{ textBox1.Text = "Jûs nepasirinkote failo!"; }
 
 		}
-
-	
-
-
-
+		
 
 		private void button1_Click(object sender, EventArgs e)
 		{
@@ -59,28 +55,32 @@ namespace WinFormsDemo
 				using var streamReader = File.OpenText(path1);  // Path to Cvs file
 				using var csvReader = new CsvReader(streamReader, CultureInfo.CurrentCulture);
 				
-				var users = csvReader.GetRecords<User>();
-								
-				// INSERT INTO DATABASE				
+							
+				// INSERT INTO DATABASE		
+						
 				string query = "INSERT INTO users (`username`, `password`, `company`, `email`, `role`, `client_code`) VALUES (@v0, @v1, @v2, @v3, @v4, @v5)";
 
 				Database databaseObject = new Database();
 				SQLiteCommand myCommand = new SQLiteCommand(query, databaseObject.myConnection);
 				databaseObject.OpenConnection();
-				var i = 0;
-				foreach (var user in users)
+
+				string value;
+
+				while (csvReader.Read())
 				{
-					//myCommand.Parameters.AddWithValue("@v" + i, string.Empty);
-					Console.WriteLine(user);
-					i++;
-					Console.WriteLine(i);
+					for (int i = 0; csvReader.TryGetField<string>(i, out value); i++)
+					{
+
+						myCommand.Parameters.AddWithValue("@v" + i, value);
+						Console.WriteLine(value);
+
+					}
+
+					myCommand.ExecuteNonQuery();
+
 				}
 
-				myCommand.ExecuteNonQuery();
-				//var result = myCommand.ExecuteNonQuery();
 				databaseObject.CloseConection();
-
-				//Console.WriteLine("Rows Added : {0}", result);
 				Console.ReadLine();
 
 			} 
@@ -89,21 +89,10 @@ namespace WinFormsDemo
 			{
 				textBox1.Text = "Jûs nepasirinkote failo!";
 			}
-						
+
+			// zetcode.com/csharp/csv/
+
 		}
 
 	}
-
-	
-	public record User
-	{
-		public string username { get; set; }
-		public string password { get; set; }
-		public string company { get; set; }
-		public string email { get; set; }
-		public int role { get; set; }
-		public string client_code { get; set; }
-	}
-
-
 }
