@@ -1,11 +1,9 @@
-//using static System.Net.Mime.MediaTypeNames;
-//using System.Formats.Asn1;
-using Microsoft.Data.Sqlite;
+using System;
+using System.Data.SQLite;
 using CsvHelper;
 using CsvHelper.Configuration;
-//using System;
 using System.Globalization;
-//using Microsoft.EntityFrameworkCore.Sqlite;
+
 
 namespace WinFormsDemo
 {
@@ -46,94 +44,59 @@ namespace WinFormsDemo
 
 		}
 
+	
+
+
+
+
 		private void button1_Click(object sender, EventArgs e)
 		{
 
 			if (path1 != null)
 			{
-				var csvConfig = new CsvConfiguration(CultureInfo.CurrentCulture)
-				{
-					HasHeaderRecord = true
-					
-				};
 
-
-
-				using var streamReader = new StreamReader(path1);
-				using var csvReader = new CsvReader(streamReader, csvConfig);
-
-				string value;
-
-
+				// READING CSV
+				using var streamReader = File.OpenText(path1);  // Path to Cvs file
+				using var csvReader = new CsvReader(streamReader, CultureInfo.CurrentCulture);
 				
-				SqliteConnection con = new SqliteConnection("data source=C:/database/test2.db;");
-
-
-				SqliteCommand cmd = new SqliteCommand
-				{
-					Connection = con,
-					CommandText =
-				"INSERT INTO users (id,username,password,company,email,role,client_code)" +
-				"values (@v0,@v1,@v2,v3,@v4,@v5,@v6)"
-				};
-
-				con.Open();
-
-				while (csvReader.Read())
-				{
-					for (int i = 0; csvReader.TryGetField<string>(i, out value); i++)
-					{
-						//	System.Diagnostics.Debug.WriteLine($"{value} ");
-
-						cmd.Parameters.AddWithValue("@v" + i, string.Empty);
-						if (i == 6)
-						{
-							i = 0;
-						}
-					}
-					cmd.ExecuteNonQuery();
-
-				}
+				var users = csvReader.GetRecords<User>();
 								
+				// INSERT INTO DATABASE				
+				string query = "INSERT INTO users (`username`, `password`, `company`, `email`, `role`, `client_code`) VALUES (@v0, @v1, @v2, @v3, @v4, @v5)";
 
-			}
+				Database databaseObject = new Database();
+				SQLiteCommand myCommand = new SQLiteCommand(query, databaseObject.myConnection);
+				databaseObject.OpenConnection();
+				var i = 0;
+				foreach (var user in users)
+				{
+					//myCommand.Parameters.AddWithValue("@v" + i, string.Empty);
+					Console.WriteLine(user);
+					i++;
+					Console.WriteLine(i);
+				}
+
+				myCommand.ExecuteNonQuery();
+				//var result = myCommand.ExecuteNonQuery();
+				databaseObject.CloseConection();
+
+				//Console.WriteLine("Rows Added : {0}", result);
+				Console.ReadLine();
+
+			} 
+
 			else
 			{
 				textBox1.Text = "Jûs nepasirinkote failo!";
 			}
-			
+						
 		}
-
-		//public static void AddUserToDatabase(User user)
-		//{
-		//	SqliteConnection con = new SqliteConnection("data source=C:/database/test2.db;");
-		//	SqliteCommand cmd = new SqliteCommand
-		//	{
-		//		Connection = con,
-		//		CommandText =
-		//		"INSERT INTO users (id,username,password,company,email,role,client_code)" +
-		//		"values (@v1,@v2,@v3,v4,@v5,@v6,@v7)"
-		//	};
-		//	cmd.Parameters.AddWithValue("@v1", user.id);
-		//	cmd.Parameters.AddWithValue("@v2", user.username);
-		//	cmd.Parameters.AddWithValue("@v3", user.password);
-		//	cmd.Parameters.AddWithValue("@v4", user.company);
-		//	cmd.Parameters.AddWithValue("@v5", user.email);
-		//	cmd.Parameters.AddWithValue("@v6", user.role);
-		//	cmd.Parameters.AddWithValue("@v7", user.client_code);
-
-		//	con.Open();
-		//	cmd.ExecuteNonQuery();
-		//	con.Close();
-
-		//}
 
 	}
 
 	
-	public class User
+	public record User
 	{
-		public int id { get; set; }
 		public string username { get; set; }
 		public string password { get; set; }
 		public string company { get; set; }
