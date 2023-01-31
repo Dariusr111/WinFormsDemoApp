@@ -3,6 +3,7 @@ using System.Data.SQLite;
 using CsvHelper;
 using CsvHelper.Configuration;
 using System.Globalization;
+using static System.Net.Mime.MediaTypeNames;
 
 
 namespace WinFormsDemo
@@ -50,40 +51,79 @@ namespace WinFormsDemo
 
 			if (path1 != null)
 			{
-
-				// READING CSV
+	            // READING CSV
 				using var streamReader = File.OpenText(path1);  // Path to Cvs file
 				using var csvReader = new CsvReader(streamReader, CultureInfo.CurrentCulture);
-				
-							
-				// INSERT INTO DATABASE		
-						
-				string query = "INSERT INTO users (`username`, `password`, `company`, `email`, `role`, `client_code`) VALUES (@v0, @v1, @v2, @v3, @v4, @v5)";
 
-				Database databaseObject = new Database();
-				SQLiteCommand myCommand = new SQLiteCommand(query, databaseObject.myConnection);
-				databaseObject.OpenConnection();
-
-				string value;
-
-				while (csvReader.Read())
+				if (!File.Exists("C:/database/test4.db"))
 				{
-					for (int i = 0; csvReader.TryGetField<string>(i, out value); i++)
-					{
+					// CREATE DATABASE		
+					string query = "CREATE TABLE users (`id` INTEGER, `username` TEXT, `password` TEXT, `company` TEXT, `email` TEXT, `role` INTEGER, `client_code` TEXT, PRIMARY KEY(`id` AUTOINCREMENT));";
 
-						myCommand.Parameters.AddWithValue("@v" + i, value);
-						Console.WriteLine(value);
+					Database databaseObject = new Database();
+					SQLiteCommand myCommand = new SQLiteCommand(query, databaseObject.myConnection);
+					databaseObject.OpenConnection();
+					myCommand.CommandText = query;
+					myCommand.ExecuteNonQuery();
+
+					// INSERT INTO DATABASE		
+					string query2 = "INSERT INTO users (`username`, `password`, `company`, `email`, `role`, `client_code`) VALUES (@v0, @v1, @v2, @v3, @v4, @v5);";
+
+					SQLiteCommand myCommand2 = new SQLiteCommand(query2, databaseObject.myConnection);
+
+					string value;
+
+					while (csvReader.Read())
+					{
+						for (int i = 0; csvReader.TryGetField<string>(i, out value); i++)
+						{
+
+							myCommand2.Parameters.AddWithValue("@v" + i, value);
+							Console.WriteLine(value);
+
+						}
+
+						myCommand2.ExecuteNonQuery();
 
 					}
 
-					myCommand.ExecuteNonQuery();
+					databaseObject.CloseConection();
+					Console.ReadLine();
 
 				}
 
-				databaseObject.CloseConection();
-				Console.ReadLine();
+				else
+				{
+					// INSERT INTO DATABASE		
 
-			} 
+					string query = "INSERT INTO users (`username`, `password`, `company`, `email`, `role`, `client_code`) VALUES (@v0, @v1, @v2, @v3, @v4, @v5);";
+
+					Database databaseObject = new Database();
+					SQLiteCommand myCommand = new SQLiteCommand(query, databaseObject.myConnection);
+					databaseObject.OpenConnection();
+
+					string value;
+
+					while (csvReader.Read())
+					{
+						for (int i = 0; csvReader.TryGetField<string>(i, out value); i++)
+						{
+
+							myCommand.Parameters.AddWithValue("@v" + i, value);
+							Console.WriteLine(value);
+
+						}
+
+						myCommand.ExecuteNonQuery();
+
+					}
+
+					databaseObject.CloseConection();
+					Console.ReadLine();
+
+				}
+
+			}
 
 			else
 			{
