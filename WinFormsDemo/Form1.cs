@@ -18,13 +18,11 @@ namespace WinFormsDemo
 		}
 
 
-
 		private void label1_Click(object sender, EventArgs e)
 		{
 		}
 
 	
-
 		private string path1;
 
 		private void button2_Click(object sender, EventArgs e)
@@ -55,7 +53,7 @@ namespace WinFormsDemo
 				using var streamReader = File.OpenText(path1);  // Path to Cvs file
 				using var csvReader = new CsvReader(streamReader, CultureInfo.CurrentCulture);
 
-				if (!File.Exists("C:/database/test4.db"))
+				if (!File.Exists("C:/database/test5.db"))
 				{
 					// CREATE DATABASE		
 					string query = "CREATE TABLE users (`id` INTEGER, `username` TEXT, `password` TEXT, `company` TEXT, `email` TEXT, `role` INTEGER, `client_code` TEXT, PRIMARY KEY(`id` AUTOINCREMENT));";
@@ -129,10 +127,14 @@ namespace WinFormsDemo
 			{
 				textBox1.Text = "Jûs nepasirinkote failo!";
 			}
-
+			
 			// zetcode.com/csharp/csv/
 
 		}
 
+		private void label1_Click_1(object sender, EventArgs e)
+		{
+
+		}
 	}
 }

@@ -12,10 +12,10 @@ namespace WinFormsDemo
 
 		public Database()
 		{
-			myConnection = new SQLiteConnection("Data Source=C:/database/test4.db");
-			if (!File.Exists("C:/database/test4.db"))
+			myConnection = new SQLiteConnection("Data Source=C:/database/test5.db");
+			if (!File.Exists("C:/database/test5.db"))
 			{
-				SQLiteConnection.CreateFile("C:/database/test4.db");
+				SQLiteConnection.CreateFile("C:/database/test5.db");
 				System.Console.WriteLine("Database file created");
 			}
 			else
