@@ -1,5 +1,5 @@
 # WinFormsDemoApp
-Projektukas skirtas nukopijuoti duomenis iš pasirinkto Exel failo ir importuoti juos į duomenų bazę.
+Projektukas skirtas nukopijuoti duomenis iš pasirinkto Csv failo ir importuoti juos į duomenų bazę.
 
 ![csv-to-sqlite](https://user-images.githubusercontent.com/106965568/216674079-4c840473-0c0f-4d5c-a134-2fe81f328f82.gif)
 ![image](https://user-images.githubusercontent.com/106965568/216671483-3333629f-34e0-490d-bee0-f85bddc5634c.png)
