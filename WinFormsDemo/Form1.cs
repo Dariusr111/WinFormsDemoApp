@@ -4,7 +4,10 @@ using CsvHelper;
 using CsvHelper.Configuration;
 using System.Globalization;
 using static System.Net.Mime.MediaTypeNames;
-
+using System.Security.Cryptography;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using static SQLite.SQLite3;
+using System.Diagnostics;
 
 namespace WinFormsDemo
 {
@@ -15,6 +18,7 @@ namespace WinFormsDemo
 		public Form1()
 		{
 			InitializeComponent();
+			label1.Hide();
 		}
 
 
@@ -22,9 +26,9 @@ namespace WinFormsDemo
 		{
 		}
 
-	
-		private string path1;
 
+	    // Select Csv File
+		private string path1;
 		private void button2_Click(object sender, EventArgs e)
 		{
 			OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -37,32 +41,48 @@ namespace WinFormsDemo
 			{ 
 				textBox1.Text = openFileDialog.FileName;
 				path1 = openFileDialog.FileName;
+				var onlyFileName = System.IO.Path.GetFileNameWithoutExtension(openFileDialog.FileName);
+
 			}
 			else
 			{ textBox1.Text = "Jûs nepasirinkote failo!"; }
 
 		}
-		
+
+
+     
 
 		private void button1_Click(object sender, EventArgs e)
 		{
-
+			
 			if (path1 != null)
 			{
 	            // READING CSV
 				using var streamReader = File.OpenText(path1);  // Path to Cvs file
 				using var csvReader = new CsvReader(streamReader, CultureInfo.CurrentCulture);
 
-				if (!File.Exists("C:/database/test5.db"))
+
+				
+
+				// CHECKING IF TABLE EXIST
+
+				Database databaseObject = new Database();
+				string query = "SELECT name FROM sqlite_master WHERE type='table' AND name='users'";
+				SQLiteCommand myCommand = new SQLiteCommand(query, databaseObject.myConnection);
+				databaseObject.OpenConnection();
+				SQLiteDataReader result = myCommand.ExecuteReader();
+
+				// if table !exist
+				if (!result.HasRows)
 				{
 					// CREATE DATABASE		
-					string query = "CREATE TABLE users (`id` INTEGER, `username` TEXT, `password` TEXT, `company` TEXT, `email` TEXT, `role` INTEGER, `client_code` TEXT, PRIMARY KEY(`id` AUTOINCREMENT));";
+					string query1 = "CREATE TABLE users (`id` INTEGER, `username` TEXT, `password` TEXT, `company` TEXT, `email` TEXT, `role` INTEGER, `client_code` TEXT, PRIMARY KEY(`id` AUTOINCREMENT));";
 
-					Database databaseObject = new Database();
-					SQLiteCommand myCommand = new SQLiteCommand(query, databaseObject.myConnection);
-					databaseObject.OpenConnection();
-					myCommand.CommandText = query;
-					myCommand.ExecuteNonQuery();
+					//Database databaseObject = new Database();
+					SQLiteCommand myCommand1 = new SQLiteCommand(query1, databaseObject.myConnection);
+					//databaseObject.OpenConnection();
+					myCommand1.CommandText = query1;
+					myCommand1.ExecuteNonQuery();
 
 					// INSERT INTO DATABASE		
 					string query2 = "INSERT INTO users (`username`, `password`, `company`, `email`, `role`, `client_code`) VALUES (@v0, @v1, @v2, @v3, @v4, @v5);";
@@ -94,10 +114,10 @@ namespace WinFormsDemo
 				{
 					// INSERT INTO DATABASE		
 
-					string query = "INSERT INTO users (`username`, `password`, `company`, `email`, `role`, `client_code`) VALUES (@v0, @v1, @v2, @v3, @v4, @v5);";
+					string query2 = "INSERT INTO users (`username`, `password`, `company`, `email`, `role`, `client_code`) VALUES (@v0, @v1, @v2, @v3, @v4, @v5);";
 
-					Database databaseObject = new Database();
-					SQLiteCommand myCommand = new SQLiteCommand(query, databaseObject.myConnection);
+					//Database databaseObject = new Database();
+					SQLiteCommand myCommand2 = new SQLiteCommand(query2, databaseObject.myConnection);
 					databaseObject.OpenConnection();
 
 					string value;
@@ -107,19 +127,22 @@ namespace WinFormsDemo
 						for (int i = 0; csvReader.TryGetField<string>(i, out value); i++)
 						{
 
-							myCommand.Parameters.AddWithValue("@v" + i, value);
+							myCommand2.Parameters.AddWithValue("@v" + i, value);
 							Console.WriteLine(value);
 
 						}
 
-						myCommand.ExecuteNonQuery();
+						myCommand2.ExecuteNonQuery();
 
 					}
 
 					databaseObject.CloseConection();
 					Console.ReadLine();
+					
 
 				}
+
+                label1.Show();
 
 			}
 
@@ -127,10 +150,9 @@ namespace WinFormsDemo
 			{
 				textBox1.Text = "Jûs nepasirinkote failo!";
 			}
-			
-			// zetcode.com/csharp/csv/
-
+						
 		}
+
 
 		private void label1_Click_1(object sender, EventArgs e)
 		{
