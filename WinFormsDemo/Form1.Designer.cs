@@ -37,14 +37,15 @@
 			this.radioButton3 = new System.Windows.Forms.RadioButton();
 			this.label2 = new System.Windows.Forms.Label();
 			this.label3 = new System.Windows.Forms.Label();
+			this.button3 = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
 			// button1
 			// 
 			this.button1.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-			this.button1.Location = new System.Drawing.Point(318, 321);
+			this.button1.Location = new System.Drawing.Point(315, 332);
 			this.button1.Name = "button1";
-			this.button1.Size = new System.Drawing.Size(176, 68);
+			this.button1.Size = new System.Drawing.Size(176, 46);
 			this.button1.TabIndex = 0;
 			this.button1.Text = "Importuoti į DB";
 			this.button1.UseVisualStyleBackColor = true;
@@ -52,17 +53,17 @@
 			// 
 			// textBox1
 			// 
-			this.textBox1.Location = new System.Drawing.Point(393, 122);
+			this.textBox1.Location = new System.Drawing.Point(315, 86);
 			this.textBox1.Name = "textBox1";
-			this.textBox1.Size = new System.Drawing.Size(176, 23);
+			this.textBox1.Size = new System.Drawing.Size(254, 23);
 			this.textBox1.TabIndex = 1;
 			// 
 			// button2
 			// 
 			this.button2.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-			this.button2.Location = new System.Drawing.Point(599, 122);
+			this.button2.Location = new System.Drawing.Point(599, 86);
 			this.button2.Name = "button2";
-			this.button2.Size = new System.Drawing.Size(137, 23);
+			this.button2.Size = new System.Drawing.Size(137, 46);
 			this.button2.TabIndex = 3;
 			this.button2.Text = "Pasirinkite Csv failą";
 			this.button2.UseVisualStyleBackColor = true;
@@ -139,11 +140,23 @@
 			this.label3.Text = "Jūs nepasirinkote lentelės!";
 			this.label3.Click += new System.EventHandler(this.label3_Click);
 			// 
+			// button3
+			// 
+			this.button3.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+			this.button3.Location = new System.Drawing.Point(644, 332);
+			this.button3.Name = "button3";
+			this.button3.Size = new System.Drawing.Size(92, 46);
+			this.button3.TabIndex = 10;
+			this.button3.Text = "Perkrauti";
+			this.button3.UseVisualStyleBackColor = true;
+			this.button3.Click += new System.EventHandler(this.button3_Click);
+			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(800, 450);
+			this.Controls.Add(this.button3);
 			this.Controls.Add(this.label3);
 			this.Controls.Add(this.label2);
 			this.Controls.Add(this.radioButton3);
@@ -171,5 +184,6 @@
 		private RadioButton radioButton3;
 		private Label label2;
 		private Label label3;
+		private Button button3;
 	}
 }

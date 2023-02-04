@@ -358,6 +358,8 @@ namespace WinFormsDemo
 
 			}
 
+
+
 		}
 
 
@@ -371,7 +373,7 @@ namespace WinFormsDemo
 		private void radioButton1_CheckedChanged(object sender, EventArgs e)
 		{
 
-			label3.Hide();
+			ResetValues();
 
 		}
 
@@ -379,16 +381,17 @@ namespace WinFormsDemo
 		// MATERIALS
 		private void radioButton2_CheckedChanged(object sender, EventArgs e)
 		{
-		
-			label3.Hide();
+
+			ResetValues();
+
 		}
 
 
 		// COMPONENTS
 		private void radioButton3_CheckedChanged(object sender, EventArgs e)
 		{
+			ResetValues();
 			
-			label3.Hide();
 		}
 
 		private void label2_Click(object sender, EventArgs e)
@@ -401,5 +404,27 @@ namespace WinFormsDemo
 		{
 
 		}
+
+
+	private void ResetValues()
+	{
+			label3.Hide();
+
 	}
+
+
+
+		private void ResetForm()
+		{
+			Application.Restart();
+			Environment.Exit(0);
+
+		}
+
+		private void button3_Click(object sender, EventArgs e)
+		{
+			ResetForm();
+		}
+	}
+
 }
