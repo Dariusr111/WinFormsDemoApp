@@ -1,13 +1,9 @@
 using System;
 using System.Data.SQLite;
 using CsvHelper;
-using CsvHelper.Configuration;
+// using CsvHelper.Configuration;
 using System.Globalization;
-using static System.Net.Mime.MediaTypeNames;
-using System.Security.Cryptography;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
-using static SQLite.SQLite3;
-using System.Diagnostics;
+
 
 namespace WinFormsDemo
 {
@@ -59,7 +55,6 @@ namespace WinFormsDemo
 			// USERS IMPORT
 			if (radioButton1.Checked == true)
 			{
-				label3.Hide();
 				if (path1 != null)
 				{
 					// READING CSV
@@ -158,10 +153,101 @@ namespace WinFormsDemo
 
 
 			// MATERIALS IMPORT
-			else if (radioButton1.Checked == true)
+			else if (radioButton2.Checked == true)
 			{
-				label3.Hide();
+				if (path1 != null)
+				{
+					// READING CSV
+					using var streamReader = File.OpenText(path1);  // Path to Cvs file
+					using var csvReader = new CsvReader(streamReader, CultureInfo.CurrentCulture);
 
+
+					// CHECKING IF TABLE EXIST
+					Database databaseObject = new Database();
+					string query = "SELECT name FROM sqlite_master WHERE type='table' AND name='materials'";
+					SQLiteCommand myCommand = new SQLiteCommand(query, databaseObject.myConnection);
+					databaseObject.OpenConnection();
+					SQLiteDataReader result = myCommand.ExecuteReader();
+
+
+					// if table !exist -> creating new
+					if (!result.HasRows)
+					{
+						// CREATE DATABASE		
+						string query1 = "CREATE TABLE materials (`id` INTEGER, `group` TEXT, `name` TEXT, `description` TEXT, `unit` TEXT, `weight` INTEGER, `coef` REAL, `waste` REAL, `price` REAL, `ax` REAL, `ax_name` TEXT, PRIMARY KEY(`id` AUTOINCREMENT));";
+
+						//Database databaseObject = new Database();
+						SQLiteCommand myCommand1 = new SQLiteCommand(query1, databaseObject.myConnection);
+						//databaseObject.OpenConnection();
+						myCommand1.CommandText = query1;
+						myCommand1.ExecuteNonQuery();
+
+						// INSERT INTO DATABASE		
+						string query2 = "INSERT INTO materials (`group`, `name`, `description`, `unit`, `weight`, `coef`, `waste`, `price`, `ax`, `ax_name`) VALUES (@v0, @v1, @v2, @v3, @v4, @v5, @v6, @v7, @v8, @v9);";
+
+						SQLiteCommand myCommand2 = new SQLiteCommand(query2, databaseObject.myConnection);
+
+						string value;
+
+						while (csvReader.Read())
+						{
+							for (int i = 0; csvReader.TryGetField<string>(i, out value); i++)
+							{
+
+								myCommand2.Parameters.AddWithValue("@v" + i, value);
+								Console.WriteLine(value);
+
+							}
+
+							myCommand2.ExecuteNonQuery();
+
+						}
+
+						databaseObject.CloseConection();
+						Console.ReadLine();
+
+					}
+
+					else
+					{
+						// INSERT INTO DATABASE		
+
+						string query2 = "INSERT INTO materials (`group`, `name`, `description`, `unit`, `weight`, `coef`, `waste`, `price`, `ax`, `ax_name`) VALUES (@v0, @v1, @v2, @v3, @v4, @v5, @v6, @v7, @v8, @v9);";
+
+						//Database databaseObject = new Database();
+						SQLiteCommand myCommand2 = new SQLiteCommand(query2, databaseObject.myConnection);
+						databaseObject.OpenConnection();
+
+						string value;
+
+						while (csvReader.Read())
+						{
+							for (int i = 0; csvReader.TryGetField<string>(i, out value); i++)
+							{
+
+								myCommand2.Parameters.AddWithValue("@v" + i, value);
+								Console.WriteLine(value);
+
+							}
+
+							myCommand2.ExecuteNonQuery();
+
+						}
+
+						databaseObject.CloseConection();
+						Console.ReadLine();
+
+
+					}
+
+					label1.Show();
+
+				}
+
+				else
+				{
+					textBox1.Text = "Jûs nepasirinkote failo!";
+				}
 
 
 			}
@@ -169,7 +255,6 @@ namespace WinFormsDemo
 			// COMPONENTS IMPORT
 			else if (radioButton3.Checked == true)
 			{
-				label3.Hide();
 				if (path1 != null)
 				{
 					// READING CSV
@@ -273,11 +358,6 @@ namespace WinFormsDemo
 
 			}
 
-
-
-
-
-
 		}
 
 
@@ -287,25 +367,28 @@ namespace WinFormsDemo
 		}
 
 
-		// USERS IMPORT
+		// USERS
 		private void radioButton1_CheckedChanged(object sender, EventArgs e)
 		{
-			radioButton1.Checked = true;
-			
+
+			label3.Hide();
+
 		}
 
 
-		// MATERIALS IMPORT
+		// MATERIALS
 		private void radioButton2_CheckedChanged(object sender, EventArgs e)
 		{
-
+		
+			label3.Hide();
 		}
 
 
-		// COMPONENTS IMPORT
+		// COMPONENTS
 		private void radioButton3_CheckedChanged(object sender, EventArgs e)
 		{
-
+			
+			label3.Hide();
 		}
 
 		private void label2_Click(object sender, EventArgs e)
