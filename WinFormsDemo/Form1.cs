@@ -19,6 +19,7 @@ namespace WinFormsDemo
 		{
 			InitializeComponent();
 			label1.Hide();
+			label3.Hide();
 		}
 
 
@@ -41,7 +42,6 @@ namespace WinFormsDemo
 			{ 
 				textBox1.Text = openFileDialog.FileName;
 				path1 = openFileDialog.FileName;
-				var onlyFileName = System.IO.Path.GetFileNameWithoutExtension(openFileDialog.FileName);
 
 			}
 			else
@@ -51,110 +51,177 @@ namespace WinFormsDemo
 
 
      
-
+		
 		private void button1_Click(object sender, EventArgs e)
 		{
 			
-			if (path1 != null)
+		
+			// USERS IMPORT
+			if (radioButton1.Checked == true)
 			{
-	            // READING CSV
-				using var streamReader = File.OpenText(path1);  // Path to Cvs file
-				using var csvReader = new CsvReader(streamReader, CultureInfo.CurrentCulture);
-
-
-				
-
-				// CHECKING IF TABLE EXIST
-
-				Database databaseObject = new Database();
-				string query = "SELECT name FROM sqlite_master WHERE type='table' AND name='users'";
-				SQLiteCommand myCommand = new SQLiteCommand(query, databaseObject.myConnection);
-				databaseObject.OpenConnection();
-				SQLiteDataReader result = myCommand.ExecuteReader();
-
-				// if table !exist
-				if (!result.HasRows)
+				label3.Hide();
+				if (path1 != null)
 				{
-					// CREATE DATABASE		
-					string query1 = "CREATE TABLE users (`id` INTEGER, `username` TEXT, `password` TEXT, `company` TEXT, `email` TEXT, `role` INTEGER, `client_code` TEXT, PRIMARY KEY(`id` AUTOINCREMENT));";
+					// READING CSV
+					using var streamReader = File.OpenText(path1);  // Path to Cvs file
+					using var csvReader = new CsvReader(streamReader, CultureInfo.CurrentCulture);
 
-					//Database databaseObject = new Database();
-					SQLiteCommand myCommand1 = new SQLiteCommand(query1, databaseObject.myConnection);
-					//databaseObject.OpenConnection();
-					myCommand1.CommandText = query1;
-					myCommand1.ExecuteNonQuery();
 
-					// INSERT INTO DATABASE		
-					string query2 = "INSERT INTO users (`username`, `password`, `company`, `email`, `role`, `client_code`) VALUES (@v0, @v1, @v2, @v3, @v4, @v5);";
+					// CHECKING IF TABLE EXIST
+					Database databaseObject = new Database();
+					string query = "SELECT name FROM sqlite_master WHERE type='table' AND name='users'";
+					SQLiteCommand myCommand = new SQLiteCommand(query, databaseObject.myConnection);
+					databaseObject.OpenConnection();
+					SQLiteDataReader result = myCommand.ExecuteReader();
 
-					SQLiteCommand myCommand2 = new SQLiteCommand(query2, databaseObject.myConnection);
 
-					string value;
-
-					while (csvReader.Read())
+					// if table !exist -> creating new
+					if (!result.HasRows)
 					{
-						for (int i = 0; csvReader.TryGetField<string>(i, out value); i++)
-						{
+						// CREATE DATABASE		
+						string query1 = "CREATE TABLE users (`id` INTEGER, `username` TEXT, `password` TEXT, `company` TEXT, `email` TEXT, `role` INTEGER, `client_code` TEXT, PRIMARY KEY(`id` AUTOINCREMENT));";
 
-							myCommand2.Parameters.AddWithValue("@v" + i, value);
-							Console.WriteLine(value);
+						//Database databaseObject = new Database();
+						SQLiteCommand myCommand1 = new SQLiteCommand(query1, databaseObject.myConnection);
+						//databaseObject.OpenConnection();
+						myCommand1.CommandText = query1;
+						myCommand1.ExecuteNonQuery();
+
+						// INSERT INTO DATABASE		
+						string query2 = "INSERT INTO users (`username`, `password`, `company`, `email`, `role`, `client_code`) VALUES (@v0, @v1, @v2, @v3, @v4, @v5);";
+
+						SQLiteCommand myCommand2 = new SQLiteCommand(query2, databaseObject.myConnection);
+
+						string value;
+
+						while (csvReader.Read())
+						{
+							for (int i = 0; csvReader.TryGetField<string>(i, out value); i++)
+							{
+
+								myCommand2.Parameters.AddWithValue("@v" + i, value);
+								Console.WriteLine(value);
+
+							}
+
+							myCommand2.ExecuteNonQuery();
 
 						}
 
-						myCommand2.ExecuteNonQuery();
+						databaseObject.CloseConection();
+						Console.ReadLine();
 
 					}
 
-					databaseObject.CloseConection();
-					Console.ReadLine();
+					else
+					{
+						// INSERT INTO DATABASE		
+
+						string query2 = "INSERT INTO users (`username`, `password`, `company`, `email`, `role`, `client_code`) VALUES (@v0, @v1, @v2, @v3, @v4, @v5);";
+
+						//Database databaseObject = new Database();
+						SQLiteCommand myCommand2 = new SQLiteCommand(query2, databaseObject.myConnection);
+						databaseObject.OpenConnection();
+
+						string value;
+
+						while (csvReader.Read())
+						{
+							for (int i = 0; csvReader.TryGetField<string>(i, out value); i++)
+							{
+
+								myCommand2.Parameters.AddWithValue("@v" + i, value);
+								Console.WriteLine(value);
+
+							}
+
+							myCommand2.ExecuteNonQuery();
+
+						}
+
+						databaseObject.CloseConection();
+						Console.ReadLine();
+
+
+					}
+
+					label1.Show();
 
 				}
 
 				else
 				{
-					// INSERT INTO DATABASE		
-
-					string query2 = "INSERT INTO users (`username`, `password`, `company`, `email`, `role`, `client_code`) VALUES (@v0, @v1, @v2, @v3, @v4, @v5);";
-
-					//Database databaseObject = new Database();
-					SQLiteCommand myCommand2 = new SQLiteCommand(query2, databaseObject.myConnection);
-					databaseObject.OpenConnection();
-
-					string value;
-
-					while (csvReader.Read())
-					{
-						for (int i = 0; csvReader.TryGetField<string>(i, out value); i++)
-						{
-
-							myCommand2.Parameters.AddWithValue("@v" + i, value);
-							Console.WriteLine(value);
-
-						}
-
-						myCommand2.ExecuteNonQuery();
-
-					}
-
-					databaseObject.CloseConection();
-					Console.ReadLine();
-					
-
+					textBox1.Text = "Jûs nepasirinkote failo!";
 				}
 
-                label1.Show();
+			}
+
+
+			// MATERIALS IMPORT
+			else if (radioButton1.Checked == true)
+			{
+				label3.Hide();
+
+
+
+			}
+
+			// COMPONENTS IMPORT
+			else if (radioButton3.Checked == true)
+			{
+				label3.Hide();
 
 			}
 
 			else
 			{
-				textBox1.Text = "Jûs nepasirinkote failo!";
+
+				label3.Show();
+
 			}
-						
+
+
+
+
+
+
 		}
 
 
 		private void label1_Click_1(object sender, EventArgs e)
+		{
+
+		}
+
+
+		// USERS IMPORT
+		private void radioButton1_CheckedChanged(object sender, EventArgs e)
+		{
+			radioButton1.Checked = true;
+			
+		}
+
+
+		// MATERIALS IMPORT
+		private void radioButton2_CheckedChanged(object sender, EventArgs e)
+		{
+
+		}
+
+
+		// COMPONENTS IMPORT
+		private void radioButton3_CheckedChanged(object sender, EventArgs e)
+		{
+
+		}
+
+		private void label2_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		// Jûs nepasirinkote lentelës
+		private void label3_Click(object sender, EventArgs e)
 		{
 
 		}
