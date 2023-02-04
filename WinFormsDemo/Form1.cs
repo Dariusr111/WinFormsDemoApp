@@ -16,6 +16,7 @@ namespace WinFormsDemo
 			InitializeComponent();
 			label1.Hide();
 			label3.Hide();
+			button3.Hide();
 		}
 
 
@@ -141,6 +142,7 @@ namespace WinFormsDemo
 					}
 
 					label1.Show();
+					button3.Show();
 
 				}
 
@@ -241,6 +243,7 @@ namespace WinFormsDemo
 					}
 
 					label1.Show();
+					button3.Show();
 
 				}
 
@@ -341,6 +344,7 @@ namespace WinFormsDemo
 					}
 
 					label1.Show();
+					button3.Show();
 
 				}
 
@@ -409,6 +413,7 @@ namespace WinFormsDemo
 	private void ResetValues()
 	{
 			label3.Hide();
+			textBox1.Clear();
 
 	}
 
